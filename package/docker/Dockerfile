@@ -1,11 +1,11 @@
-FROM node:16.18.1 as build-deps
+FROM node:16.19.1 as build-deps
 WORKDIR /app
 COPY . ./
 RUN npm install
 RUN npm run build
 
 # stage: 2 ?~@~T the production environment
-FROM node:16.18.1-alpine
+FROM node:18.15.0-alpine
 RUN npm install -g serve@13.0.4
 COPY --from=build-deps /app/dist/ dist/
 EXPOSE 5000
