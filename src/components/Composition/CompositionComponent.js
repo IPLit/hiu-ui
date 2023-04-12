@@ -17,7 +17,14 @@ const CompositionComponent = ({ composition, consentReqId, resources }) => {
       if (!ref.targetResource.name[0].family) return givenName;
       return givenName.concat(" ").concat(ref.targetResource.name[0].family);
     }
-    const getAuthors = () => composition.author && composition.author.map((author) => author.display || getAuthor(author));
+    const getAuthors = () => {
+        let participants = composition.encounter?.targetResource?.participant;
+        let index = participants.findIndex(entry => entry?.individual?.type === "Practitioner");
+        if(index !== -1 && participants[index]?.individual?.display !== undefined){
+            return [participants[index]?.individual?.display.split("(")[0]];
+        }
+        composition.author && composition.author.map((author) => author.display || getAuthor(author));
+    };
     const getDate =() => formatDateString(composition.encounter?.targetResource?.period?.start, true);
 
     const independentDataOfType = (resourceType) => {
