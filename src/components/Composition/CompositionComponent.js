@@ -19,7 +19,7 @@ const CompositionComponent = ({ composition, consentReqId, resources }) => {
     }
     const getAuthors = () => {
         let participants = composition.encounter?.targetResource?.participant;
-        let index = participants.findIndex(entry => entry?.individual?.type === "Practitioner");
+        let index = participants !== undefined ? participants.findIndex(entry => entry?.individual?.type === "Practitioner") : -1;
         if(index !== -1 && participants[index]?.individual?.display !== undefined){
             return [participants[index]?.individual?.display.split("(")[0]];
         }
