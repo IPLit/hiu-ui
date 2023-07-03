@@ -69,6 +69,14 @@ const ConsentsListTable = ({ loadConsents, consentsList, loading }) => {
     return (status.toUpperCase() == 'EXPIRED' || (status.toUpperCase() == 'GRANTED' && dateExpiry.getTime() < nowDate.getTime()));
   }
 
+  function hideNavLink(status, expiredDate) {
+    const dateExpiry = new Date(expiredDate);
+    const nowDate = new Date();
+    return (status.toUpperCase() == 'EXPIRED' || status.toUpperCase() == 'DENIED' ||
+      status.toUpperCase() == 'REVOKED' ||
+      (status.toUpperCase() == 'GRANTED' && dateExpiry.getTime() < nowDate.getTime()));
+  }
+
   function getPatientFullName(patient) {
     return `${patient.firstName} ${patient.lastName}`;
   }
@@ -122,12 +130,13 @@ const ConsentsListTable = ({ loadConsents, consentsList, loading }) => {
               ? formatDateString(consent.expiredDate, true)
               : '-',
             createdOn: formatDateString(consent.createdDate, true),
-            navLink: !isExpired(consent.status, consent.expiredDate) ? (
+            navLink: hideNavLink(consent.status, consent.expiredDate) 
+              ? (
+              ''
+            ) : (
               <Link to={`/health-info/${consent.consentRequestId}`}>
                 <ArrowForwardIosIcon color="primary" />
               </Link>
-            ) : (
-              ''
             )
           }))}
         title={(
