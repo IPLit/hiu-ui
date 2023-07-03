@@ -34,7 +34,7 @@ const ConsentsListTable = ({ loadConsents, consentsList, loading }) => {
     consentCreatedDate: 'Consent created on'
   };
 
-  function getStatusText(status) {
+  function getStatusText(status, expiredDate) {
     switch (status.toUpperCase()) {
       case 'GRANTED':
         return 'Consent Granted';
@@ -49,12 +49,21 @@ const ConsentsListTable = ({ loadConsents, consentsList, loading }) => {
       case 'EXPIRED':
       return 'Consent Expired';
       default:
+        if (isExpired(status, expiredDate)) {
+          return 'Consent Expired';
+        }
         return 'Request sent';
     }
   }
 
   function isGranted(status) {
     return status.toUpperCase() == 'GRANTED';
+  }
+
+  function isExpired(status, expiredDate) {
+    const dateExpiry = new Date(expiredDate);
+    const nowDate = new Date();
+    return (status.toUpperCase() == 'EXPIRED' || (status.toUpperCase() == 'GRANTED' && dateExpiry.getTime() < nowDate.getTime()));
   }
 
   function getPatientFullName(patient) {
@@ -102,7 +111,7 @@ const ConsentsListTable = ({ loadConsents, consentsList, loading }) => {
           .map(consent => ({
             name: getPatientFullName(consent.patient),
             id: consent.patient.id,
-            status: getStatusText(consent.status),
+            status: getStatusText(consent.status, consent.expiredDate),
             grantedOn: isGranted(consent.status)
               ? formatDateString(consent.approvedDate, true)
               : '-',
@@ -110,7 +119,7 @@ const ConsentsListTable = ({ loadConsents, consentsList, loading }) => {
               ? formatDateString(consent.expiredDate, true)
               : '-',
             createdOn: formatDateString(consent.createdDate, true),
-            navLink: isGranted(consent.status) ? (
+            navLink: !isExpired(consent.status, consent.expiredDate) ? (
               <Link to={`/health-info/${consent.consentRequestId}`}>
                 <ArrowForwardIosIcon color="primary" />
               </Link>
