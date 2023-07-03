@@ -10,7 +10,7 @@ metadata:
     environment: dev
 
 image:
-  repository: bahmniindiadistro
+  repository: infoiplitin
   name: hiu-ui
   tag: latest
 
