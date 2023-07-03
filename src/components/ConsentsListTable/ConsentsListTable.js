@@ -37,6 +37,9 @@ const ConsentsListTable = ({ loadConsents, consentsList, loading }) => {
   function getStatusText(status, expiredDate) {
     switch (status.toUpperCase()) {
       case 'GRANTED':
+        if (isExpired(status, expiredDate)) {
+          return 'Consent Expired';
+        }
         return 'Consent Granted';
       case 'POSTED':
         return 'Request Initiated';
