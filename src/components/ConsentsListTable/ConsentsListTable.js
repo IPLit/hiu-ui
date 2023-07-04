@@ -62,14 +62,18 @@ const ConsentsListTable = ({ loadConsents, consentsList, loading }) => {
   }
 
   function isExpired(status, expiredDate) {
-    const dateExpiry = moment(expiredDate).format('DD/MM/YYYY HH:mm');
-    const nowDate = moment(new Date()).format('DD/MM/YYYY HH:mm');
+    const expiryStr = formatDateString(expiredDate, true);
+    const dateExpiry = moment(expiryStr).format('DD/MM/YYYY HH:mm');
+    const nowStr = formatDateString(new Date(), true);
+    const nowDate = moment(nowStr).format('DD/MM/YYYY HH:mm');
     return (status.toUpperCase() == 'EXPIRED' || (status.toUpperCase() == 'GRANTED' && compareDates(dateExpiry, nowDate) == -1));
   }
 
   function hideNavLink(status, expiredDate) {
-    const dateExpiry = moment(expiredDate).format('DD/MM/YYYY HH:mm');
-    const nowDate = moment(new Date()).format('DD/MM/YYYY HH:mm');
+    const expiryStr = formatDateString(expiredDate, true);
+    const dateExpiry = moment(expiryStr).format('DD/MM/YYYY HH:mm');
+    const nowStr = formatDateString(new Date(), true);
+    const nowDate = moment(nowStr).format('DD/MM/YYYY HH:mm');
     return (status.toUpperCase() != 'GRANTED' ||
       (status.toUpperCase() == 'GRANTED' && compareDates(dateExpiry, nowDate) == -1));
   }
