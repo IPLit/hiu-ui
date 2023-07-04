@@ -61,14 +61,14 @@ const ConsentsListTable = ({ loadConsents, consentsList, loading }) => {
   }
 
   function isExpired(status, expiredDate) {
-    const dateExpiry = new Date(expiredDate).toLocaleString([], { timeZone: "Asia/Kolkata" });
-    const nowDate = new Date().toLocaleString([], { timeZone: "Asia/Kolkata" });
+    const dateExpiry = new Date(new Date(expiredDate).toLocaleString([], { timeZone: "Asia/Kolkata" }));
+    const nowDate = new Date(new Date().toLocaleString([], { timeZone: "Asia/Kolkata" }));
     return (status.toUpperCase() == 'EXPIRED' || (status.toUpperCase() == 'GRANTED' && dateExpiry.getTime() < nowDate.getTime()));
   }
 
   function hideNavLink(status, expiredDate) {
-    const dateExpiry = new Date(expiredDate).toLocaleString([], { timeZone: "Asia/Kolkata" });
-    const nowDate = new Date().toLocaleString([], { timeZone: "Asia/Kolkata" });
+    const dateExpiry = new Date(new Date(expiredDate).toLocaleString([], { timeZone: "Asia/Kolkata" }));
+    const nowDate = new Date(new Date().toLocaleString([], { timeZone: "Asia/Kolkata" }));
     return (status.toUpperCase() != 'GRANTED' ||
       (status.toUpperCase() == 'GRANTED' && dateExpiry.getTime() < nowDate.getTime()));
   }
