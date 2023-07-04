@@ -52,9 +52,6 @@ const ConsentsListTable = ({ loadConsents, consentsList, loading }) => {
       case 'EXPIRED':
       return 'Consent Expired';
       default:
-        if (isExpired(status, expiredDate)) {
-          return 'Consent Expired';
-        }
         return 'Request sent';
     }
   }
@@ -64,16 +61,15 @@ const ConsentsListTable = ({ loadConsents, consentsList, loading }) => {
   }
 
   function isExpired(status, expiredDate) {
-    const dateExpiry = new Date(expiredDate);
-    const nowDate = new Date();
+    const dateExpiry = new Date(expiredDate).toLocaleString([], { timeZone: "Asia/Kolkata" });
+    const nowDate = new Date().toLocaleString([], { timeZone: "Asia/Kolkata" });
     return (status.toUpperCase() == 'EXPIRED' || (status.toUpperCase() == 'GRANTED' && dateExpiry.getTime() < nowDate.getTime()));
   }
 
   function hideNavLink(status, expiredDate) {
-    const dateExpiry = new Date(expiredDate);
-    const nowDate = new Date();
-    return (status.toUpperCase() == 'EXPIRED' || status.toUpperCase() == 'DENIED' ||
-      status.toUpperCase() == 'REVOKED' ||
+    const dateExpiry = new Date(expiredDate).toLocaleString([], { timeZone: "Asia/Kolkata" });
+    const nowDate = new Date().toLocaleString([], { timeZone: "Asia/Kolkata" });
+    return (status.toUpperCase() != 'GRANTED' ||
       (status.toUpperCase() == 'GRANTED' && dateExpiry.getTime() < nowDate.getTime()));
   }
 
