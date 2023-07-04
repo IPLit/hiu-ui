@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { formatDateString } from '../common/HealthInfo/FhirResourcesUtils';
 import compareDates from '../common/DateUtil';
+import moment from "moment";
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -61,14 +62,14 @@ const ConsentsListTable = ({ loadConsents, consentsList, loading }) => {
   }
 
   function isExpired(status, expiredDate) {
-    const dateExpiry = new Date(expiredDate).toLocaleString([], { timeZone: "Asia/Kolkata" });
-    const nowDate = new Date().toLocaleString([], { timeZone: "Asia/Kolkata" });
+    const dateExpiry = moment(expiredDate).format('DD/MM/YYYY HH:mm');
+    const nowDate = moment(new Date()).format('DD/MM/YYYY HH:mm');
     return (status.toUpperCase() == 'EXPIRED' || (status.toUpperCase() == 'GRANTED' && compareDates(dateExpiry, nowDate) == -1));
   }
 
   function hideNavLink(status, expiredDate) {
-    const dateExpiry = new Date(expiredDate).toLocaleString([], { timeZone: "Asia/Kolkata" });
-    const nowDate = new Date().toLocaleString([], { timeZone: "Asia/Kolkata" });
+    const dateExpiry = moment(expiredDate).format('DD/MM/YYYY HH:mm');
+    const nowDate = moment(new Date()).format('DD/MM/YYYY HH:mm');
     return (status.toUpperCase() != 'GRANTED' ||
       (status.toUpperCase() == 'GRANTED' && compareDates(dateExpiry, nowDate) == -1));
   }
