@@ -156,7 +156,7 @@ const formatDateString = function (aDate, includeTime) {
   if (aDate) {
     const dateString = aDate.toString();
     if (dateString.length > 0) {
-      const momentDate = moment(aDate);
+      const momentDate = moment.tz(aDate, 'DD/MM/YYYY hh:mm A', 'Asia/Kolkata');
       let dt = momentDate.utcOffset(Config.TIMEZONE_OFFSET, true).format('DD/MM/YYYY');
       if (includeTime) {
         dt = momentDate.utcOffset(Config.TIMEZONE_OFFSET, true).format('DD/MM/YYYY hh:mm A');
