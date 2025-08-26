@@ -14,18 +14,37 @@ import MedicationNote from './MedicationNote';
 import MedicationDose from './MedicationDose';
 
 
+const getMedicationDate = (mr) => {
+  if(mr.authoredOn){
+    return formatDateString(mr.authoredOn);
+  }
+  else if (mr.dosageInstruction[0].timing?.event && mr.dosageInstruction[0].timing?.event[0]) {
+    return formatDateString(mr.dosageInstruction[0].timing.event[0]);
+  }
+  else if (mr.dosageInstruction[0].timing?.repeat?.boundsPeriod?.start) {
+    return formatDateString(mr.dosageInstruction[0].timing.repeat.boundsPeriod.start);
+  }
+  else
+    return '';
+}
 const displayCodeableConcept = (codeableConcept, defaultText) => {
-  const ext = codeableConcept.targetResource.extension[0];
-  if (ext.extension[0]) {
+  if (codeableConcept?.targetResource?.code?.text){
+    return codeableConcept?.targetResource?.code?.text;
+  }
+  const ext = codeableConcept?.targetResource?.extension && codeableConcept?.targetResource?.extension[0];
+  if (ext?.extension[0]) {
     return ext.extension[0].valueString;
   }
   return defaultText;
 };
 
 const findMedicationName = (mr) => {
-  return (mr.medicationReference && mr.medicationReference.display)
-      ? mr.medicationReference.display
-      : displayCodeableConcept(mr.medicationReference,'Unspecified');
+  if (mr.medicationReference){
+    return mr.medicationReference.display ? mr.medicationReference.display : displayCodeableConcept(mr.medicationReference,'Unspecified');
+  }
+  if (mr.medicationCodeableConcept){
+    return mr.medicationCodeableConcept.text ? mr.medicationCodeableConcept.text : displayCodeableConcept(mr.medicationCodeableConcept,'Unspecified');
+  }
 };
 
   
@@ -76,7 +95,7 @@ const MedicationRequestsComponent = ({ medicationRequests }) => (medicationReque
           {medicationRequests.map((mr, index) => (
             <TableRow key={index}>
               <TableCell className="table-cell">
-                {mr.dosageInstruction[0].timing.event[0] ? formatDateString(mr.dosageInstruction[0].timing.event[0]) : ''}
+                {getMedicationDate(mr)}               
               </TableCell>
               <TableCell className="table-cell">
                 {findMedicationName(mr)}
