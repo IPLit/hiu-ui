@@ -5,7 +5,7 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import MaterialTable from 'material-table';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { formatDateString } from '../common/HealthInfo/FhirResourcesUtils';
+import { formatDateString, formatDateStringUTC } from '../common/HealthInfo/FhirResourcesUtils';
 import compareDates from '../common/DateUtil';
 import moment from "moment";
 
@@ -125,12 +125,12 @@ const ConsentsListTable = ({ loadConsents, consentsList, loading }) => {
             id: consent.patient.id,
             status: getStatusText(consent.status, consent.expiredDate),
             grantedOn: isGranted(consent.status)
-              ? formatDateString(consent.approvedDate, true)
+              ? formatDateStringUTC(consent.approvedDate, true)
               : '-',
             expiredOn: isGranted(consent.status)
               ? formatDateString(consent.expiredDate, true)
               : '-',
-            createdOn: formatDateString(consent.createdDate, true),
+            createdOn: formatDateStringUTC(consent.createdDate, true),
             navLink: hideNavLink(consent.status, consent.expiredDate) 
               ? (
               ''

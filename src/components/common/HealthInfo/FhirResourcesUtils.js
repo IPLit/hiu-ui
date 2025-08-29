@@ -156,7 +156,23 @@ const formatDateString = function (aDate, includeTime) {
   if (aDate) {
     const dateString = aDate.toString();
     if (dateString.length > 0) {
-      const momentDate = moment.tz(aDate, 'DD/MM/YYYY hh:mm A', 'Asia/Kolkata');
+      const momentDate = moment.utc(aDate);
+      let dt = momentDate.utcOffset(Config.TIMEZONE_OFFSET, true).format('DD/MM/YYYY');
+      if (includeTime) {
+        dt = momentDate.utcOffset(Config.TIMEZONE_OFFSET, true).format('DD/MM/YYYY hh:mm A');
+      }
+      return dt;
+    }
+    return '';
+  }
+  return '';
+};
+
+const formatDateStringUTC = function (aDate, includeTime) {
+  if (aDate) {
+    const dateString = aDate.toString();
+    if (dateString.length > 0) {
+      const momentDate = moment.tz(aDate, 'Asia/Kolkata');
       let dt = momentDate.utcOffset(Config.TIMEZONE_OFFSET, true).format('DD/MM/YYYY');
       if (includeTime) {
         dt = momentDate.utcOffset(Config.TIMEZONE_OFFSET, true).format('DD/MM/YYYY hh:mm A');
@@ -169,5 +185,5 @@ const formatDateString = function (aDate, includeTime) {
 };
 
 export {
-  identifyParentOfType, identifyFirstParent, baseEntities, processingOrder, getFormattedDateString, resourceDateFormatter, getConceptDisplay, formatDateString, getCodingDisplay, 
+  identifyParentOfType, identifyFirstParent, baseEntities, processingOrder, getFormattedDateString, resourceDateFormatter, getConceptDisplay, formatDateStringUTC, formatDateString, getCodingDisplay, 
 };
