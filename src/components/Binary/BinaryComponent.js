@@ -11,7 +11,7 @@ const BinaryComponent = ({ data, consentReqId, enclosed }) => {
       <span>Attachments (Binary) : </span>
       <AttachmentLink 
         consentReqId={consentReqId} 
-        attachmentPath={atob(entry.data)} 
+        attachmentPath={entry.data} 
         linkTitle="Link to Attachment"
       />
     </div>
