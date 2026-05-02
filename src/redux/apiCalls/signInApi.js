@@ -6,7 +6,7 @@ const signInApi = ({ userName, password, locationUuid }) => apiWrapper(
   '/sessions',
   {
     username: userName,
-    password,
+    password: password,
     loginLocationUuid: locationUuid
   },
   {
