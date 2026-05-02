@@ -164,7 +164,7 @@ export default function SignIn({ onSignIn, error }) {
               className={classes.submit}
               onClick={(e) => {
                 e.preventDefault();
-                onSignIn({ userName: btoa(userName), password: btoa(password), loginLocationUuid: userLocationUuid });
+                onSignIn({ userName: btoa(userName), password: btoa(password), locationUuid: userLocationUuid });
               }}
             >
               Sign In
