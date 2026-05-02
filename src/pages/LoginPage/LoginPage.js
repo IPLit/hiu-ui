@@ -74,8 +74,8 @@ export default function SignIn({ onSignIn, error }) {
   const accessToken = getAccessToken();
   const { isTokenValid } = verify(accessToken);
 
-  const userLocationUuid = "";
-  const userLocationCookie = Cookies.read("bahmni.user.location");
+  var userLocationUuid = "";
+  let userLocationCookie = Cookies.read("bahmni.user.location");
   if (!_.isEmpty(userLocationCookie)) {
     userLocationCookie = decodeURIComponent(userLocationCookie);
     const userLocation = JSON.parse(userLocationCookie);
