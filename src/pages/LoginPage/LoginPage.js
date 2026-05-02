@@ -19,6 +19,7 @@ import FormControl from "@material-ui/core/FormControl";
 import _ from "lodash";
 import { getAccessToken, verify } from "../../auth";
 import Config from "../../Config";
+import Cookies from "cookie";
 
 function SupportInformation() {
   return (
@@ -72,6 +73,14 @@ export default function SignIn({ onSignIn, error }) {
   };
   const accessToken = getAccessToken();
   const { isTokenValid } = verify(accessToken);
+
+  const userLocationUuid = "";
+  const userLocationCookie = Cookies.get("bahmni.user.location");
+  if (!_.isEmpty(userLocationCookie)) {
+    userLocationCookie = decodeURIComponent(userLocationCookie);
+    const userLocation = JSON.parse(userLocationCookie);
+    userLocationUuid = userLocation && userLocation.uuid ? userLocation.uuid : "";
+  }
 
   return (
     <div>
@@ -155,7 +164,7 @@ export default function SignIn({ onSignIn, error }) {
               className={classes.submit}
               onClick={(e) => {
                 e.preventDefault();
-                onSignIn({ userName: btoa(userName), password: btoa(password) });
+                onSignIn({ userName: btoa(userName), password: btoa(password), loginLocationUuid: userLocationUuid });
               }}
             >
               Sign In
